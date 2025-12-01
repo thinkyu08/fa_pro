@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RASSI FA Pro: Infographic Edition</title>
+    <title>RASSI FA Pro: Local Prototype</title>
     
-    <!-- Libraries -->
+    <!-- 필수 라이브러리 (CDN) -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" rel="stylesheet">
 
-    <!-- Tailwind Config -->
+    <!-- Tailwind 커스텀 설정 -->
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -47,11 +47,15 @@
     </script>
 
     <style>
+        /* 기본 스타일 */
         body { background-color: #0B0E14; color: #cbd5e1; }
+        
+        /* 스크롤바 커스텀 */
         ::-webkit-scrollbar { width: 6px; height: 6px; }
         ::-webkit-scrollbar-track { background: #0B0E14; }
         ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
         
+        /* 글래스모피즘 패널 */
         .glass-panel {
             background: rgba(21, 26, 37, 0.75);
             backdrop-filter: blur(12px);
@@ -59,32 +63,33 @@
             box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
         }
 
+        /* 네비게이션 스타일 */
         .sidebar-section-title { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: #64748b; margin-bottom: 0.5rem; padding-left: 1rem; margin-top: 1.5rem; font-weight: 700; }
         .nav-item { padding: 10px 16px; font-size: 0.9rem; border-left: 3px solid transparent; cursor: pointer; color: #94a3b8; transition: all 0.2s; display: flex; align-items: center; }
         .nav-item:hover { color: white; background: rgba(255,255,255,0.03); }
         .nav-item.active { background: linear-gradient(90deg, rgba(6, 182, 212, 0.1) 0%, transparent 100%); border-left-color: #06B6D4; color: #22D3EE; }
         .nav-item.active-strategy { background: linear-gradient(90deg, rgba(139, 92, 246, 0.1) 0%, transparent 100%); border-left-color: #8B5CF6; color: #A78BFA; }
 
+        /* 차트 컨테이너 & 로더 */
         .chart-container { position: relative; width: 100%; height: 100%; } 
         .loader { border: 2px solid rgba(255,255,255,0.1); border-top: 2px solid #F97316; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
+        /* 씽크풀 전용 뱃지 */
         .tp-badge { background: rgba(249, 115, 22, 0.15); color: #FB923C; border: 1px solid rgba(249, 115, 22, 0.3); font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; font-weight: bold; }
         .signal-buy { color: #F87171; background: rgba(248, 113, 113, 0.1); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; }
         .signal-hold { color: #FBBF24; background: rgba(251, 191, 36, 0.1); padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.75rem; }
 
-        /* Report Specific Styles */
+        /* 리포트 스타일 */
         .report-content h1 { font-size: 1.5rem; font-weight: bold; color: white; margin-bottom: 0.5rem; }
         .report-content h2 { font-size: 1.1rem; font-weight: bold; color: #60A5FA; margin-top: 1.5rem; margin-bottom: 0.8rem; border-bottom: 1px solid #1E293B; padding-bottom: 0.3rem; }
         .report-content p { color: #CBD5E1; line-height: 1.6; margin-bottom: 1rem; font-size: 0.9rem; }
-        .report-content li { color: #CBD5E1; margin-bottom: 0.5rem; font-size: 0.9rem; }
-        .report-highlight { background: rgba(6, 182, 212, 0.1); color: #22D3EE; padding: 2px 6px; rounded: 4px; font-weight: 500; }
         .infographic-box { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 1.5rem; margin: 1.5rem 0; }
     </style>
 </head>
 <body class="h-screen flex overflow-hidden">
 
-    <!-- Sidebar -->
+    <!-- 사이드바 네비게이션 -->
     <aside class="w-64 bg-dark-panel border-r border-dark-border flex flex-col z-20 shrink-0">
         <div class="p-6">
             <h1 class="text-xl font-bold tracking-tight text-white flex items-center">
@@ -94,7 +99,7 @@
         </div>
 
         <nav class="flex-1 overflow-y-auto pb-4">
-            <!-- Section 1: Strategy Deck -->
+            <!-- 전략 탭 -->
             <div class="sidebar-section-title">Project Strategy</div>
             <div onclick="navigate('overview')" id="nav-overview" class="nav-item">
                 <i class="fas fa-chart-pie w-5 text-center mr-3"></i> Overview
@@ -103,9 +108,8 @@
                 <i class="fas fa-stopwatch w-5 text-center mr-3"></i> Productivity AX
             </div>
 
-            <!-- Section 2: FA Workstation -->
+            <!-- 워크스테이션 탭 -->
             <div class="sidebar-section-title">FA Workstation</div>
-            
             <div onclick="navigate('insight')" id="nav-insight" class="nav-item">
                 <i class="fas fa-brain w-5 text-center mr-3"></i> AI Insight Engine
             </div>
@@ -128,16 +132,16 @@
                 <div class="w-8 h-8 rounded bg-gradient-to-br from-brand-tp_orange to-red-600 flex items-center justify-center text-xs font-bold text-white">FA</div>
                 <div>
                     <div class="text-xs text-white font-bold">Manager Park</div>
-                    <div class="text-[10px] text-gray-500">ThinkPool Partner</div>
+                    <div class="text-[10px] text-gray-500">Local Prototype</div>
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- Main Content -->
+    <!-- 메인 컨텐츠 영역 -->
     <main class="flex-1 flex flex-col bg-dark-bg relative overflow-hidden h-full">
         
-        <!-- Header -->
+        <!-- 헤더 -->
         <header class="h-[60px] border-b border-dark-border flex items-center justify-between px-6 bg-dark-panel/80 backdrop-blur z-10 shrink-0">
             <div id="page-title" class="text-lg font-bold text-white">Dashboard Overview</div>
             
@@ -149,54 +153,61 @@
 
                 <div class="relative">
                     <i class="fas fa-search absolute left-3 top-2.5 text-gray-500 text-xs"></i>
-                    <input type="text" placeholder="종목, 테마, 이슈 검색..." class="bg-dark-bg border border-dark-border rounded-lg py-1.5 pl-8 pr-4 text-xs text-white focus:border-brand-tp_orange outline-none w-64 transition-all">
+                    <input type="text" placeholder="종목, 테마 검색 (Local)" class="bg-dark-bg border border-dark-border rounded-lg py-1.5 pl-8 pr-4 text-xs text-white focus:border-brand-tp_orange outline-none w-64 transition-all">
                 </div>
             </div>
         </header>
 
-        <!-- Content Area -->
+        <!-- 동적 컨텐츠 영역 -->
         <div id="content-area" class="flex-1 overflow-hidden p-4 relative">
-            <!-- Dynamic Content -->
+            <!-- 자바스크립트로 컨텐츠가 여기에 주입됩니다 -->
         </div>
 
-        <!-- Floating AI Chat -->
+        <!-- AI 챗봇 버튼 -->
         <button onclick="toggleAIChat()" class="fixed bottom-6 right-6 w-12 h-12 bg-gradient-to-r from-brand-tp_orange to-red-500 rounded-full shadow-glow-tp flex items-center justify-center text-white z-50 hover:scale-110 transition duration-300 group">
             <i class="fas fa-comment-dots text-xl group-hover:animate-pulse"></i>
         </button>
 
-         <!-- AI Chat Panel -->
+         <!-- AI 챗봇 패널 -->
         <div id="ai-chat-panel" class="fixed bottom-20 right-6 w-80 h-[400px] glass-panel rounded-xl flex flex-col hidden animate__animated animate__fadeInUp z-50">
             <div class="p-3 border-b border-white/10 bg-white/5 rounded-t-xl flex justify-between">
                 <span class="text-sm font-bold text-white flex items-center"><i class="fas fa-robot text-brand-tp_orange mr-2"></i> Rassi Assistant</span>
                 <button onclick="toggleAIChat()" class="text-gray-400 hover:text-white"><i class="fas fa-times"></i></button>
             </div>
-            <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 text-sm">
+            <div id="chat-messages" class="flex-1 p-3 overflow-y-auto space-y-3 text-sm custom-scrollbar">
                 <div class="flex items-start">
                     <div class="bg-brand-tp_orange/20 p-1.5 rounded mr-2"><i class="fas fa-robot text-brand-tp_orange text-xs"></i></div>
-                    <div class="bg-white/5 p-2 rounded text-gray-300 text-xs">무엇을 도와드릴까요?</div>
+                    <div class="bg-white/5 p-2 rounded text-gray-300 text-xs">안녕하세요! 라씨 로컬 비서입니다. 무엇을 도와드릴까요? (API 없이 작동합니다)</div>
                 </div>
             </div>
             <div class="p-3 border-t border-white/10 relative">
-                <input id="chat-input" type="text" class="w-full bg-black/40 border border-white/10 rounded py-2 pl-3 pr-8 text-xs text-white" placeholder="AI에게 질문하기...">
+                <input id="chat-input" type="text" onkeypress="if(event.key==='Enter') sendChatMessage()" class="w-full bg-black/40 border border-white/10 rounded py-2 pl-3 pr-8 text-xs text-white" placeholder="질문을 입력하세요...">
                 <button onclick="sendChatMessage()" class="absolute right-4 top-4 text-brand-tp_orange text-xs"><i class="fas fa-paper-plane"></i></button>
             </div>
         </div>
 
     </main>
 
+    <!-- 자바스크립트 로직 -->
     <script>
+        // 전역 차트 관리자 (메모리 누수 방지)
+        const chartRegistry = {};
+
+        // DOM 요소 참조
         const contentArea = document.getElementById('content-area');
         const pageTitle = document.getElementById('page-title');
         const globalTicker = document.getElementById('global-ticker');
         const navItems = document.querySelectorAll('.nav-item');
 
-        const data = {
-            marketPrices: Array.from({length: 30}, (_, i) => 1000 + Math.random() * 200 - 100 + (i * 10)),
+        // 더미 데이터 (로컬 작동용)
+        const mockData = {
+            prices: Array.from({length: 30}, (_, i) => 1000 + Math.random() * 200 - 100 + (i * 10)),
             aiSignals: [null, null, null, 1050, null, null, 1120, null, null, null, 980, null, null, 1200, null, null, null, null, null, null, null, null, 1300, null, null, null, 1250, null, null, null]
         };
 
-        // Router
+        // --- 라우터 (네비게이션) ---
         function navigate(view) {
+            // 네비게이션 UI 업데이트
             navItems.forEach(n => {
                 n.classList.remove('active', 'active-strategy');
                 n.style.color = '#94a3b8';
@@ -215,15 +226,21 @@
                 }
             }
 
+            // 차트 인스턴스 정리 (중요: 캔버스 충돌 방지)
+            Object.values(chartRegistry).forEach(instance => {
+                if(instance) instance.destroy();
+            });
+
+            // 화면 전환 애니메이션
             contentArea.classList.add('opacity-0');
             
             setTimeout(() => {
                 contentArea.innerHTML = '';
                 
+                // 뷰 렌더링
                 switch(view) {
                     case 'overview': renderOverview(); pageTitle.innerText = "Project Strategy"; break;
                     case 'workflow': renderWorkflow(); pageTitle.innerText = "Productivity Innovation"; break;
-                    
                     case 'insight': renderInsight(); pageTitle.innerText = "AI Insight Engine"; break;
                     case 'dashboard': renderDashboard(); pageTitle.innerText = "Market Cockpit"; break;
                     case 'discovery': renderDiscovery(); pageTitle.innerText = "Smart Stock Discovery"; break;
@@ -234,6 +251,7 @@
                 contentArea.classList.remove('opacity-0');
                 contentArea.classList.add('animate__animated', 'animate__fadeIn');
                 
+                // 차트 초기화 (DOM 렌더링 후 실행)
                 setTimeout(() => {
                     if(view === 'workflow') initProdChart();
                     if(view === 'insight') initInsightChart();
@@ -243,13 +261,11 @@
             }, 100);
         }
 
-        // ============================
-        // VIEWS
-        // ============================
+        // --- 뷰 렌더러 함수들 (HTML 주입) ---
         
         function renderOverview() {
              contentArea.innerHTML = `
-                <div class="max-w-5xl mx-auto mt-4 overflow-y-auto h-full pr-2">
+                <div class="max-w-5xl mx-auto mt-4 overflow-y-auto h-full pr-2 custom-scrollbar">
                     <div class="glass-panel p-8 rounded-xl border-l-4 border-l-brand-tp_orange bg-gradient-to-br from-brand-tp_orange/5 to-transparent mb-6">
                         <h2 class="text-2xl font-bold text-white mb-2">씽크풀 AI 엔진의 FA 최적화 전략</h2>
                         <p class="text-gray-400">
@@ -276,15 +292,17 @@
                     </div>
                 </div>`;
         }
+
         function renderWorkflow() {
              contentArea.innerHTML = `
-                <div class="max-w-5xl mx-auto mt-4 overflow-y-auto h-full pr-2">
+                <div class="max-w-5xl mx-auto mt-4 overflow-y-auto h-full pr-2 custom-scrollbar">
                     <div class="glass-panel p-6 rounded-xl">
                         <h2 class="text-xl font-bold text-white mb-4">FA 업무 생산성 혁신 (180분 → 5분)</h2>
                         <div class="h-[300px] chart-container"><canvas id="productivityChart"></canvas></div>
                     </div>
                 </div>`;
         }
+
         function renderInsight() {
              contentArea.innerHTML = `
                 <div class="max-w-6xl mx-auto space-y-8 h-full flex flex-col justify-center">
@@ -320,6 +338,7 @@
                     </div>
                 </div>`;
         }
+
         function renderDashboard() {
              contentArea.innerHTML = `
                 <div class="grid grid-cols-12 gap-4 h-full min-h-0">
@@ -376,6 +395,7 @@
                 </div>
              `;
         }
+
         function renderDiscovery() {
             contentArea.innerHTML = `
                 <div class="h-full flex flex-col gap-4 min-h-0">
@@ -409,10 +429,12 @@
                     </div>
                 </div>`;
         }
+
         function renderTerminal() {
             contentArea.innerHTML = `
                 <div class="grid grid-cols-12 gap-4 h-full min-h-0">
                     <div class="col-span-9 flex flex-col gap-4 min-h-0">
+                        <!-- Header -->
                         <div class="glass-panel p-4 rounded-xl flex justify-between items-center bg-gradient-to-r from-gray-900 to-black shrink-0">
                             <div class="flex items-center gap-4">
                                 <h2 class="text-2xl font-bold text-white">삼성전자 <span class="text-lg text-gray-500 font-normal">005930</span></h2>
@@ -420,49 +442,68 @@
                                 <span class="tp-badge">반도체 대장주</span>
                             </div>
                             <div class="flex gap-2">
-                                <button onclick="generateAIReportDemo('삼성전자')" class="px-3 py-1 bg-brand-tp_orange hover:bg-orange-600 text-white text-xs font-bold rounded transition">AI Report 생성</button>
+                                <button onclick="generateReportLocal('삼성전자')" class="px-3 py-1 bg-brand-tp_orange hover:bg-orange-600 text-white text-xs font-bold rounded transition">AI Report 생성</button>
                             </div>
                         </div>
+                        
+                        <!-- Main Chart Area -->
                         <div class="flex-1 glass-panel p-4 rounded-xl flex flex-col relative min-h-0">
                             <div class="absolute top-4 left-4 z-10 flex gap-2">
                                 <div class="flex items-center gap-1 bg-black/60 px-2 py-1 rounded text-[10px] border border-white/10">
                                     <div class="w-2 h-2 rounded-full bg-brand-tp_orange"></div> Rassi Buy
                                 </div>
                             </div>
+                            <!-- Top: Main Price Chart (2/3) -->
                             <div class="flex-[2] border-b border-white/5 pb-2 min-h-0 relative">
                                 <div class="chart-container absolute inset-0"><canvas id="proChart"></canvas></div>
                             </div>
+                            <!-- Bottom: Supply/Demand (1/3) -->
                             <div class="flex-[1] pt-2 min-h-0 relative">
                                 <div class="text-[10px] text-gray-500 mb-1 font-bold absolute top-2 left-0 z-10">INVESTOR TREND (수급)</div>
                                 <div class="chart-container absolute inset-0 top-6"><canvas id="supplyChart"></canvas></div>
                             </div>
                         </div>
                     </div>
+                    
+                    <!-- Right Panel -->
                     <div class="col-span-3 flex flex-col gap-4 min-h-0">
                          <div class="glass-panel p-5 rounded-xl flex flex-col items-center justify-center relative bg-gradient-to-br from-brand-tp_orange/10 to-transparent border-brand-tp_orange/20 shrink-0">
                             <h3 class="text-brand-tp_orange text-xs font-bold uppercase tracking-widest mb-1">Rassi Performance</h3>
                             <div class="flex justify-between w-full px-4 mt-2">
-                                <div class="text-center"><div class="text-[10px] text-gray-400">적중률 (Hit)</div><div class="text-xl font-bold text-white">88%</div></div>
-                                <div class="text-center"><div class="text-[10px] text-gray-400">누적수익 (Yield)</div><div class="text-xl font-bold text-brand-up">+145%</div></div>
+                                <div class="text-center">
+                                    <div class="text-[10px] text-gray-400">적중률 (Hit)</div>
+                                    <div class="text-xl font-bold text-white">88%</div>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-[10px] text-gray-400">누적수익 (Yield)</div>
+                                    <div class="text-xl font-bold text-brand-up">+145%</div>
+                                </div>
                             </div>
                          </div>
+
                          <div class="flex-1 glass-panel rounded-xl flex flex-col overflow-hidden min-h-0">
-                            <div class="p-3 bg-white/5 border-b border-white/10 text-xs font-bold text-white shrink-0"><i class="fas fa-history mr-1 text-gray-500"></i> Signal History</div>
+                            <div class="p-3 bg-white/5 border-b border-white/10 text-xs font-bold text-white shrink-0">
+                                <i class="fas fa-history mr-1 text-gray-500"></i> Signal History
+                            </div>
                             <div class="overflow-y-auto flex-1 p-0 custom-scrollbar">
                                 <table class="w-full text-center text-xs">
-                                    <thead class="text-gray-500 bg-black/20"><tr><th class="py-2">진입일</th><th>진입가</th><th>수익률</th></tr></thead>
+                                    <thead class="text-gray-500 bg-black/20">
+                                        <tr><th class="py-2">진입일</th><th>진입가</th><th>수익률</th></tr>
+                                    </thead>
                                     <tbody class="text-gray-300 divide-y divide-white/5">
                                         <tr><td class="py-2">23.10.15</td><td>68,000</td><td class="text-brand-up font-bold">+5.2%</td></tr>
                                         <tr><td class="py-2">23.08.20</td><td>66,500</td><td class="text-brand-up font-bold">+3.1%</td></tr>
+                                        <tr><td class="py-2">23.05.11</td><td>64,000</td><td class="text-brand-down">-1.5%</td></tr>
+                                        <tr><td class="py-2">23.01.05</td><td>59,000</td><td class="text-brand-up font-bold">+12.0%</td></tr>
                                     </tbody>
                                 </table>
                             </div>
                          </div>
                     </div>
-                </div>`;
+                </div>
+            `;
         }
 
-        // *** UPDATED: WORKSPACE WITH INFOGRAPHIC ***
         function renderReport() {
             contentArea.innerHTML = `
                 <div class="flex h-full gap-4 min-h-0">
@@ -472,10 +513,20 @@
                             <div class="p-3 bg-white/5 rounded border border-white/10">
                                 <span class="text-xs text-brand-tp_orange font-bold">Rassi Signal Status</span>
                                 <div class="text-sm text-white mt-1">현재 <span class="text-brand-up font-bold">매수 보유 중</span> (수익률 +2.5%)</div>
+                                <div class="text-xs text-gray-500 mt-1">목표가 75,000원 / 손절가 69,000원</div>
                             </div>
                             <div class="p-3 bg-white/5 rounded border border-white/10">
                                 <span class="text-xs text-brand-cyan font-bold">AI News Summary</span>
-                                <p class="text-xs text-gray-300 mt-1 leading-relaxed">최근 HBM 수율 개선 소식과 함께 외국인 대량 매수 유입. 경쟁사 대비 밸류에이션 매력 부각.</p>
+                                <p class="text-xs text-gray-300 mt-1 leading-relaxed">
+                                    최근 HBM 수율 개선 소식과 함께 외국인 대량 매수 유입. 경쟁사 대비 밸류에이션 매력 부각.
+                                </p>
+                            </div>
+                            <div class="p-3 bg-white/5 rounded border border-white/10">
+                                <span class="text-xs text-brand-purple font-bold">Key Stats</span>
+                                <div class="grid grid-cols-2 gap-2 mt-2">
+                                    <div class="text-xs text-gray-400">PER: <span class="text-white">15.2x</span></div>
+                                    <div class="text-xs text-gray-400">PBR: <span class="text-white">1.4x</span></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -484,38 +535,57 @@
                             <span class="font-bold text-white">리포트 에디터</span>
                             <div class="flex gap-2">
                                 <button id="btn-edit-mode" onclick="toggleReportMode('edit')" class="hidden text-xs bg-gray-700 px-3 py-1 rounded text-white hover:bg-gray-600">편집 모드</button>
-                                <button onclick="generateAIReportDemo('삼성전자')" class="text-xs bg-brand-tp_orange px-3 py-1 rounded text-white font-bold hover:bg-orange-600 flex items-center"><i class="fas fa-magic mr-1"></i> AI 초안 작성</button>
+                                <button onclick="generateReportLocal('삼성전자')" class="text-xs bg-brand-tp_orange px-3 py-1 rounded text-white font-bold hover:bg-orange-600 flex items-center"><i class="fas fa-magic mr-1"></i> AI 초안 작성</button>
                             </div>
                         </div>
                         <div id="report-container" class="flex-1 relative overflow-hidden">
                             <textarea id="report-editor" class="w-full h-full bg-transparent p-6 text-sm text-gray-300 outline-none resize-none leading-relaxed" placeholder="AI 초안 작성 버튼을 누르면 인포그래픽 리포트가 생성됩니다."></textarea>
-                            <div id="report-result" class="hidden w-full h-full overflow-y-auto p-8 bg-black/20 custom-scrollbar">
-                                <!-- Dynamic Content Goes Here -->
-                            </div>
+                            <div id="report-result" class="hidden w-full h-full overflow-y-auto p-8 bg-black/20 custom-scrollbar"></div>
                         </div>
                     </div>
                 </div>`;
         }
 
-        // ============================
-        // LOGIC & CHARTS
-        // ============================
+        // --- 차트 초기화 함수들 ---
 
         function initProdChart() {
             const ctx = document.getElementById('productivityChart');
             if(!ctx) return;
-            new Chart(ctx, { type: 'bar', data: { labels: ['시장조사', '초안작성', '편집/검수'], datasets: [{ label: '기존 방식 (분)', data: [45, 90, 45], backgroundColor: '#EF4444' }, { label: 'Rassi FA Pro (분)', data: [1, 2, 2], backgroundColor: '#F97316' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { grid: { color: '#1e293b' } }, x: { grid: { display:false } } } } });
+            chartRegistry.prod = new Chart(ctx, { type: 'bar', data: { labels: ['시장조사', '초안작성', '편집/검수'], datasets: [{ label: '기존 방식 (분)', data: [45, 90, 45], backgroundColor: '#EF4444' }, { label: 'Rassi FA Pro (분)', data: [1, 2, 2], backgroundColor: '#F97316' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8' } } }, scales: { y: { grid: { color: '#1e293b' }, ticks: { color: '#94a3b8' } }, x: { grid: { display:false } } } } });
         }
         
-        let insightChartInstance = null;
         function initInsightChart() {
             const ctx = document.getElementById('insightChart');
             if(!ctx) return;
-            const chartData = { labels: Array.from({length: 30}, (_, i) => `Day ${i+1}`), datasets: [{ label: '주가 (Price)', data: data.marketPrices, borderColor: '#94a3b8', backgroundColor: 'transparent', borderWidth: 2, tension: 0.4, pointRadius: 0 }] };
-            insightChartInstance = new Chart(ctx, { type: 'line', data: chartData, options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { display: false, grid: { color: '#1e293b' } } } } });
+            chartRegistry.insight = new Chart(ctx, { 
+                type: 'line', 
+                data: { labels: Array.from({length: 30}, (_, i) => `Day ${i+1}`), datasets: [{ label: '주가 (Price)', data: mockData.prices, borderColor: '#94a3b8', backgroundColor: 'transparent', borderWidth: 2, tension: 0.4, pointRadius: 0 }] }, 
+                options: { responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false }, plugins: { legend: { display: false } }, scales: { x: { grid: { display: false }, ticks: { color: '#64748b' } }, y: { display: false, grid: { color: '#1e293b' } } } } 
+            });
         }
+
+        function initDashChart() {
+            const ctx = document.getElementById('marketPulseChart');
+            if(!ctx) return;
+            const grad = ctx.getContext('2d').createLinearGradient(0,0,0,200);
+            grad.addColorStop(0, 'rgba(249, 115, 22, 0.4)');
+            grad.addColorStop(1, 'rgba(249, 115, 22, 0)');
+            chartRegistry.dash = new Chart(ctx, { type: 'line', data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(260).map((v,i)=>v+Math.random()*5), borderColor: '#F97316', backgroundColor: grad, fill: true, tension: 0.4, pointRadius:0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } } });
+        }
+
+        function initProCharts() {
+            const ctx1 = document.getElementById('proChart');
+            const ctx2 = document.getElementById('supplyChart');
+            if(ctx1) chartRegistry.pro1 = new Chart(ctx1, { type: 'bar', data: { labels: Array(30).fill(''), datasets: [{ type: 'line', label: 'MA', data: Array(30).fill(70000).map((v,i)=>v+i*50), borderColor: '#F59E0B', pointRadius: 0, borderWidth: 1 }, { label: 'Price', data: Array(30).fill(69000).map(v => v + Math.random()*2000), backgroundColor: (c)=> c.raw > 70000 ? '#F87171' : '#60A5FA' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display:false }, y: { grid: { color: '#1e293b' } } } } });
+            if(ctx2) chartRegistry.pro2 = new Chart(ctx2, { type: 'line', data: { labels: Array(30).fill(''), datasets: [ { label: '기관', data: Array(30).fill(0).map((v,i)=> Math.sin(i)*100), borderColor: '#F87171', borderWidth: 1.5, pointRadius: 0 }, { label: '외국인', data: Array(30).fill(0).map((v,i)=> Math.cos(i)*100), borderColor: '#F59E0B', borderWidth: 1.5, pointRadius: 0 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font:{size:10}, boxWidth: 10 } } }, scales: { x: { display:false }, y: { display:false } } } });
+        }
+
+        // --- 상호작용 로직 ---
+
+        // 인사이트 엔진 토글 (모의 데이터 사용)
         function toggleAIAnalysis(enable) {
-            if (!insightChartInstance) return;
+            const chart = chartRegistry.insight;
+            if (!chart) return;
             const btnBasic = document.getElementById('btn-mode-basic');
             const btnAi = document.getElementById('btn-mode-ai');
             const desc = document.getElementById('ai-description');
@@ -525,39 +595,23 @@
                 btnAi.classList.add('bg-brand-cyan', 'text-white', 'shadow-glow-cyan');
                 if(desc) desc.classList.remove('hidden');
                 if(overlay) overlay.classList.remove('hidden');
-                insightChartInstance.data.datasets[0].borderColor = '#06B6D4';
-                insightChartInstance.data.datasets[0].backgroundColor = 'rgba(6,182,212,0.1)';
-                insightChartInstance.data.datasets[0].fill = true;
-                if(insightChartInstance.data.datasets.length === 1) { insightChartInstance.data.datasets.push({ label: 'Signal', data: data.aiSignals, backgroundColor: '#F97316', pointStyle: 'circle', pointRadius: 6, showLine: false, type: 'scatter' }); }
+                chart.data.datasets[0].borderColor = '#06B6D4';
+                chart.data.datasets[0].backgroundColor = 'rgba(6,182,212,0.1)';
+                chart.data.datasets[0].fill = true;
+                if(chart.data.datasets.length === 1) { chart.data.datasets.push({ label: 'Signal', data: mockData.aiSignals, backgroundColor: '#F97316', pointStyle: 'circle', pointRadius: 6, showLine: false, type: 'scatter' }); }
             } else {
                 btnAi.classList.remove('bg-brand-cyan', 'text-white', 'shadow-glow-cyan');
                 btnBasic.classList.replace('text-gray-400', 'bg-white/10');
                 if(desc) desc.classList.add('hidden');
                 if(overlay) overlay.classList.add('hidden');
-                insightChartInstance.data.datasets[0].borderColor = '#94a3b8';
-                insightChartInstance.data.datasets[0].fill = false;
-                if(insightChartInstance.data.datasets.length > 1) insightChartInstance.data.datasets.pop();
+                chart.data.datasets[0].borderColor = '#94a3b8';
+                chart.data.datasets[0].fill = false;
+                if(chart.data.datasets.length > 1) chart.data.datasets.pop();
             }
-            insightChartInstance.update();
+            chart.update();
         }
 
-        function initDashChart() {
-            const ctx = document.getElementById('marketPulseChart');
-            if(!ctx) return;
-            const grad = ctx.getContext('2d').createLinearGradient(0,0,0,200);
-            grad.addColorStop(0, 'rgba(249, 115, 22, 0.4)');
-            grad.addColorStop(1, 'rgba(249, 115, 22, 0)');
-            new Chart(ctx, { type: 'line', data: { labels: Array(20).fill(''), datasets: [{ data: Array(20).fill(260).map((v,i)=>v+Math.random()*5), borderColor: '#F97316', backgroundColor: grad, fill: true, tension: 0.4, pointRadius:0 }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display: false }, y: { display: false } } } });
-        }
-
-        function initProCharts() {
-            const ctx1 = document.getElementById('proChart');
-            const ctx2 = document.getElementById('supplyChart');
-            if(ctx1) new Chart(ctx1, { type: 'bar', data: { labels: Array(30).fill(''), datasets: [{ type: 'line', label: 'MA', data: Array(30).fill(70000).map((v,i)=>v+i*50), borderColor: '#F59E0B', pointRadius: 0, borderWidth: 1 }, { label: 'Price', data: Array(30).fill(69000).map(v => v + Math.random()*2000), backgroundColor: (c)=> c.raw > 70000 ? '#F87171' : '#60A5FA' }] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { display:false }, y: { grid: { color: '#1e293b' } } } } });
-            if(ctx2) new Chart(ctx2, { type: 'line', data: { labels: Array(30).fill(''), datasets: [ { label: '기관', data: Array(30).fill(0).map((v,i)=> Math.sin(i)*100), borderColor: '#F87171', borderWidth: 1.5, pointRadius: 0 }, { label: '외국인', data: Array(30).fill(0).map((v,i)=> Math.cos(i)*100), borderColor: '#F59E0B', borderWidth: 1.5, pointRadius: 0 } ] }, options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#94a3b8', font:{size:10}, boxWidth: 10 } } }, scales: { x: { display:false }, y: { display:false } } } });
-        }
-
-        // *** UPDATED: REPORT GENERATION (INFOGRAPHIC) ***
+        // 리포트 뷰 모드 토글
         function toggleReportMode(mode) {
             const editor = document.getElementById('report-editor');
             const result = document.getElementById('report-result');
@@ -574,7 +628,9 @@
             }
         }
 
-        async function generateAIReportDemo(stockName) {
+        // 로컬 리포트 생성 (모의)
+        async function generateReportLocal(stockName) {
+            // 다른 화면에서 호출된 경우 자동 이동
             if(!document.getElementById('report-editor')) {
                 navigate('report');
                 await new Promise(r => setTimeout(r, 300));
@@ -582,13 +638,19 @@
             
             const resultDiv = document.getElementById('report-result');
             
-            // 1. Inject Rich HTML with Infographic Structure
+            // 로딩 효과
+            const editor = document.getElementById('report-editor');
+            if(editor) editor.value = "AI가 데이터를 분석하고 리포트를 생성중입니다...";
+            
+            await new Promise(r => setTimeout(r, 1000)); // 1초 지연
+
+            // 인포그래픽 리포트 HTML 주입
             resultDiv.innerHTML = `
-                <div class="report-content fade-in">
+                <div class="report-content animate__animated animate__fadeIn">
                     <div class="flex justify-between items-start border-b border-gray-700 pb-4 mb-6">
                         <div>
                             <span class="text-brand-tp_orange text-xs font-bold uppercase">AI Premium Report</span>
-                            <h1 class="text-2xl mt-1">삼성전자 <span class="text-gray-500 text-lg font-normal">(005930)</span></h1>
+                            <h1 class="text-2xl mt-1">${stockName} <span class="text-gray-500 text-lg font-normal">(005930)</span></h1>
                             <p class="text-sm text-gray-400">작성일: 2024.03.21 | 투자의견: <strong class="text-brand-up">BUY</strong> | 목표가: 105,000원</p>
                         </div>
                         <div class="text-right">
@@ -628,7 +690,7 @@
 
                     <h2>1. 투자 포인트: AI 반도체 밸류체인의 핵심</h2>
                     <p>
-                        삼성전자는 최근 <span class="report-highlight">HBM3E 12단 제품</span>의 엔비디아 공급 가능성이 높아지며 경쟁사와의 격차를 축소하고 있습니다. 
+                        ${stockName}는 최근 <span class="report-highlight">HBM3E 12단 제품</span>의 엔비디아 공급 가능성이 높아지며 경쟁사와의 격차를 축소하고 있습니다. 
                         특히 메모리 가격 반등과 함께 파운드리 사업부의 적자 폭 축소가 예상되어 전사적 이익 체력이 강화될 전망입니다.
                         온디바이스 AI 시장 개화에 따른 모바일/PC 교체 수요 역시 긍정적입니다.
                     </p>
@@ -649,13 +711,17 @@
             `;
 
             toggleReportMode('view');
-            setTimeout(renderReportChart, 100); // Wait for DOM render
+            setTimeout(renderReportChart, 100); 
         }
 
+        // 리포트 내부 차트 렌더링
         function renderReportChart() {
             const ctx = document.getElementById('report-radar-chart');
             if(!ctx) return;
-            new Chart(ctx, {
+            // 이전 차트 파괴 (중복 방지)
+            if(chartRegistry.report) chartRegistry.report.destroy();
+
+            chartRegistry.report = new Chart(ctx, {
                 type: 'radar',
                 data: {
                     labels: ['성장성', '수익성', '밸류에이션', '수급', '모멘텀'],
@@ -684,20 +750,38 @@
             });
         }
 
+        // 챗봇 UI 토글
         function toggleAIChat() { document.getElementById('ai-chat-panel').classList.toggle('hidden'); }
+        
+        // 챗봇 메시지 전송 (로컬 모의 응답)
         async function sendChatMessage() {
             const i = document.getElementById('chat-input'), m = document.getElementById('chat-messages');
             if(!i.value) return;
+            
+            // 사용자 메시지
             m.innerHTML += `<div class="flex justify-end"><div class="bg-brand-tp_orange/20 p-2 rounded text-brand-tp_orange text-xs">${i.value}</div></div>`;
             m.scrollTop = m.scrollHeight;
-            const r = "네, 현재 시장은 반도체 섹터 주도로 상승 흐름을 보이고 있습니다.";
-            await new Promise(res => setTimeout(res, 500));
-            m.innerHTML += `<div class="flex items-start"><div class="bg-brand-tp_orange/20 p-1.5 rounded mr-2"><i class="fas fa-robot text-brand-tp_orange text-xs"></i></div><div class="bg-white/5 p-2 rounded text-gray-300 text-xs">${r}</div></div>`;
-            m.scrollTop = m.scrollHeight;
+            
+            const userText = i.value;
             i.value = '';
+
+            // AI 응답 (1초 딜레이 시뮬레이션)
+            await new Promise(res => setTimeout(res, 800));
+            
+            let response = "죄송합니다. 현재 모드에서는 제한된 답변만 가능합니다.";
+            if (userText.includes("안녕")) response = "안녕하세요! 라씨 FA Pro 비서입니다. 종목 분석이나 리포트 작성을 도와드릴까요?";
+            else if (userText.includes("삼성전자") || userText.includes("종목")) response = "삼성전자는 현재 강력한 매수 시그널이 포착되었습니다. 리포트 탭에서 상세 분석을 확인해보세요.";
+            else if (userText.includes("전망")) response = "반도체 섹터 전반적으로 수급이 개선되고 있습니다. 특히 외국인 매수세가 강한 종목을 주목하세요.";
+
+            m.innerHTML += `<div class="flex items-start"><div class="bg-brand-tp_orange/20 p-1.5 rounded mr-2"><i class="fas fa-robot text-brand-tp_orange text-xs"></i></div><div class="bg-white/5 p-2 rounded text-gray-300 text-xs">${response}</div></div>`;
+            m.scrollTop = m.scrollHeight;
         }
 
-        document.addEventListener('DOMContentLoaded', () => { navigate('terminal'); });
+        // 초기화
+        document.addEventListener('DOMContentLoaded', () => {
+            navigate('overview');
+        });
+
     </script>
 </body>
 </html>
